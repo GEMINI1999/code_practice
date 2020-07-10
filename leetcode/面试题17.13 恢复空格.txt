@@ -1,0 +1,18 @@
+class Solution {
+    public int respace(String[] dictionary, String sentence) {
+        Set<String> set = new HashSet<>();
+        for(String str : dictionary)
+            set.add(str);
+        int len = sentence.length();
+        int[] dp = new int[len + 1];//dp[i] 表示考虑前 i 个字符最少的未识别的字符数量
+        for(int i = 1; i <= len; i++){
+            dp[i] = dp[i-1] + 1;//没有字典中的字符串，根据前面一位数值+1
+            for(int j = 0; j < i; j++){
+                if(set.contains(sentence.substring(j, i))){//截取j到i-1端字符串
+                    dp[i] = Math.min(dp[i], dp[j]);//很显然j到i-1端字符串匹配成功，dp[i]和dp[j]从某种意义上来说是等效的，那么很明显dp[i]要更新为dp[i]和dp[j]中比较小的那个
+                }
+            }
+        }
+        return dp[len];
+    }
+}
