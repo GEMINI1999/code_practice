@@ -1,0 +1,49 @@
+class Solution {
+  // 采用二叉搜索树的做法，在树节点中除了val值外，还有一个count值，来保留它的左子树上有多少个节点，也就是有多少树是比它小的。需要注意的是，我们需要从nums的末尾开始建立树，因为是找右侧更小的数。
+    // 这样，最开始那个点形成的树节点，count值是0
+    public List<Integer> countSmaller(int[] nums) {
+        int[] ret = new int[nums.length];
+        TreeNode root = null;
+        for(int i = nums.length - 1;i >= 0;i--){
+            root = Insert(root, new TreeNode(nums[i]), ret, i);
+        }
+        List<Integer> list = new ArrayList<>();
+        for(int i = 0;i < nums.length;i++){
+            list.add(ret[i]);
+        }
+        return list;
+    }
+    
+    // 插入到树里面的时候，还要更新count域的值。而当node插入到树里面之后，实际上它的ret已经是确定的了。
+    public TreeNode Insert(TreeNode root, TreeNode node, int[] ret, int i){
+        if(root == null){
+            root = node;
+            return root;
+        }
+        //如果待插入的数比较小，或者相等的时候，就往左子树中插入,且根节点的count要加1
+        if(node.val <= root.val){
+            root.count++;
+            root.left = Insert(root.left, node, ret, i);
+        }
+        else{
+            ret[i] += root.count + 1;  //对应点的count增加越过的那个节点的count值+1。因为越过的那个节点也比它小。
+            root.right = Insert(root.right, node, ret, i);
+        }
+        return root;
+    }
+}
+
+// 树节点中除了val, 还有一个count, 来统计它的左子树中的节点
+class TreeNode{
+    int val;
+    int count;
+    TreeNode left;
+    TreeNode right;
+    
+    public TreeNode(int value){
+        this.val = value;
+        this.count = 0;
+        this.left = null;
+        this.right = null;
+    }
+}
