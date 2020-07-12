@@ -1,0 +1,14 @@
+public int calculateMinimumHP(int[][] dungeon) {
+        int[][] dp = new int[dungeon.length + 1][dungeon[0].length + 1];//数组大一圈为了保存初始值
+        for(int i = 0; i < dungeon.length + 1; i++){
+            Arrays.fill(dp[i], 9999);//设置为无穷大，保证每一步都是正常规律，没有特殊情况
+        }
+        dp[dungeon.length - 1][dungeon[0].length] = 1;
+        dp[dungeon.length][dungeon[0].length - 1] = 1;
+        for(int i = dungeon.length - 1; i >= 0; i--){
+            for(int j = dungeon[0].length - 1; j >= 0; j--){
+                dp[i][j] = Math.max(Math.min(dp[i + 1][j], dp[i][j + 1]) - dungeon[i][j], 1);//1是为了活着走到这一步，最小只能是1不能再少了
+            }
+        }
+        return dp[0][0];
+    }
