@@ -1,0 +1,27 @@
+class Solution {
+   public int[] intersect(int[] nums1, int[] nums2) {
+        if (nums1.length > nums2.length) {
+            return intersect(nums2, nums1);//使得nums2长度永远>nums1
+        }
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        for (int num : nums1) {
+            int count = map.getOrDefault(num, 0) + 1;
+            map.put(num, count);
+        }
+        int[] intersection = new int[nums1.length];
+        int index = 0;
+        for (int num : nums2) {
+            int count = map.getOrDefault(num, 0);//getOrDefault(num, 0)有num这个数字就取num的值，没有则默认返回0
+            if (count > 0) {
+                intersection[index++] = num;//index++ 先赋值再+1
+                count--;
+                if (count > 0) {//判断是否有下一步 
+                    map.put(num, count);//count-1 > 0更新
+                } else {
+                    map.remove(num);//count-1 = 0移除数字
+                }
+            }
+        }
+        return Arrays.copyOfRange(intersection, 0, index);//返回0-index的数组，因为不是所有nums1的数字都有和nums2有交集
+   }
+}
