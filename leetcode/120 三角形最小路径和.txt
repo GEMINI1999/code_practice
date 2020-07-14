@@ -20,7 +20,7 @@ class Solution {
     }
 }
 
-方法2 自底向上
+方法2 自底向上 可以从二维优化为一维dp[j] = Math.min(dp[j], dp[j+1]) +  triangle.get(i).get(j);
 class Solution {
     public int minimumTotal(List<List<Integer>> triangle) {
         int[][] dp = new int[triangle.size() + 1][triangle.size() + 1];
